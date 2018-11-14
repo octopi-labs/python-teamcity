@@ -1,7 +1,7 @@
 README
 ======
 
-Python Teamcity is a python wrapper for the `Teamcity <https://www.jetbrains.com/teamcity//>`_
+Python Teamcity is a python wrapper for the [Teamcity](https://www.jetbrains.com/teamcity/)
 REST API which aims to provide a more conventionally pythonic way of controlling
 a Teamcity server.  It provides a higher-level API containing a number of
 convenience functions.
@@ -69,6 +69,6 @@ Inspiration
 ---------------
 
 The development of this repository started with inspiration from existing repositories which are as follows:
-* `[PyTeamcity](https://github.com/SurveyMonkey/pyteamcity)`
-* `Teamcity Python Rest Client <https://github.com/yotamoron/teamcity-python-rest-client>`
+* [PyTeamcity](https://github.com/SurveyMonkey/pyteamcity)
+* [Teamcity Python Rest Client](https://github.com/yotamoron/teamcity-python-rest-client)`
 
