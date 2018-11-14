@@ -14,8 +14,8 @@ the things you can use it for:
 * Delete jobs
 * Update jobs
 * Get a job's build information
-* Get Jenkins master version information
-* Get Jenkins plugin information
+* Get Teamcity master version information
+* Get Teamcity plugin information
 * Start a build on a job
 * Create nodes
 * Enable/Disable nodes
@@ -44,10 +44,6 @@ Bug report:
 
 * https://github.com/octopi-assembly/python-teamcity/issues
 
-Repository:
-
-* https://git.openstack.org/cgit/openstack/python-jenkins
-
 Cloning:
 
 * git clone https://github.com/octopi-assembly/python-teamcity.git
@@ -67,4 +63,4 @@ Installing without setup.py
 
 Then install the required python packages using pip_::
 
-    $ sudo pip install python-jenkins
+    $ sudo pip install python-teamcity
