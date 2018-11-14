@@ -64,3 +64,11 @@ Installing without setup.py
 Then install the required python packages using pip_::
 
     $ sudo pip install python-teamcity
+    
+Inspiration
+---------------
+
+The development of this repository started with inspiration from existing repositories which are as follows:
+* `PyTeamcity <https://github.com/SurveyMonkey/pyteamcity>`
+* `Teamcity Python Rest Client <https://github.com/yotamoron/teamcity-python-rest-client>`
+
