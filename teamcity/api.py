@@ -1,12 +1,14 @@
-import requests
-
 import platform
-if platform.python_version() >= 3:
+
+import requests
+from teamcity.config import (TEAMCITY_API, TEAMCITY_BASIC_AUTH,
+                             TEAMCITY_GUEST_AUTH, TIMEOUT)
+
+if int(platform.python_version_tuple()[0]) >= 3:
     from urllib.parse import urlparse
 else:
     from urlparse import urlparse
 
-from teamcity.config import TIMEOUT
 
 
 class Api(object):
@@ -17,7 +19,6 @@ class Api(object):
     """
     def __init__(self, *args, **kwargs):
         """Initialize Api request
-        
         """
         if args:
             try:
@@ -28,13 +29,43 @@ class Api(object):
             username = None
             password = None
         
-        baseurl = kwargs.get('baseurl', None)
-        self.base_scheme = urlparse(baseurl).scheme if baseurl else None
+        self.base_scheme = kwargs.get('scheme')
+        self.baseurl = self._generate_url(kwargs.get('scheme'), kwargs.get('host'), kwargs.get('port'))
         self.username = username
         self.password = password
         self.timeout = kwargs.get('timeout', TIMEOUT)
         self.ssl_verify = kwargs.get('ssl_verify', True)
         self.cert = kwargs.get('cert', None)
+        self.connector = self._connect()
+    
+    def _generate_url(self, scheme, host, port):
+        return "{scheme}://{host}:{port}".format(scheme=scheme, host=host, port=port)
+
+    def _connect(self):
+        auth = TEAMCITY_BASIC_AUTH if self.username else TEAMCITY_GUEST_AUTH
+        url = self.baseurl + "/{auth}/{api}".format(auth=auth, api=TEAMCITY_API)
+        return self.get(url)
+    
+    def _update_url_scheme(self, url):
+        """Updates scheme of given url to the one used in Teamcity baseurl.
+        
+        :param url: URL for which scheme needs to be changed
+        :type url: str
+        :return: Updated URL
+        :rtype: str
+        """
+        if self.base_scheme and not url.startswith("{scheme}://".format(scheme=self.base_scheme)):
+            url_split = urlparse.urlsplit(url)
+            url = urlparse.urlunsplit(
+                [
+                    self.base_scheme,
+                    url_split.netloc,
+                    url_split.path,
+                    url_split.query,
+                    url_split.fragment
+                ]
+            )
+        return url
     
     def get_request_dict(self, params=None, data=None, files=None, headers=None, **kwargs):
         request_kwargs = kwargs
@@ -62,35 +93,15 @@ class Api(object):
 
         return request_kwargs
 
-    def _update_url_scheme(self, url):
-        """Updates scheme of given url to the one used in Teamcity baseurl.
-        
-        :param url: URL for which scheme needs to be changed
-        :type url: str
-        :return: Updated URL
-        :rtype: str
-        """
-        if self.base_scheme and not url.startswith("{scheme}://".format(scheme=self.base_scheme)):
-            url_split = urlparse.urlsplit(url)
-            url = urlparse.urlunsplit(
-                [
-                    self.base_scheme,
-                    url_split.netloc,
-                    url_split.path,
-                    url_split.query,
-                    url_split.fragment
-                ]
-            )
-        return url
-
     def get(self, url, params=None, headers=None, allow_redirects=True, stream=False):
         request_kwargs = self.get_request_dict(
             params=params,
             headers=headers,
             allow_redirects=allow_redirects,
-            stream=stream
+            stream=stream,
+            auth=(self.username, self.password)
         )
-
+        
         return requests.get(self._update_url_scheme(url), **request_kwargs)
 
     def post(self, url, params=None, data=None, files=None, headers=None, allow_redirects=True, **kwargs):
@@ -100,6 +111,7 @@ class Api(object):
             files=files,
             headers=headers,
             allow_redirects=allow_redirects,
+            auth=(self.username, self.password)
             **kwargs)
 
         return requests.post(self._update_url_scheme(url), **request_kwargs)
