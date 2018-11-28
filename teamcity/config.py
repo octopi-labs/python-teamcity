@@ -1,0 +1,7 @@
+TEAMCITY_API = "app/rest"
+TEAMCITY_API_VERSION = "latest"
+
+TEAMCITY_BASIC_AUTH = "httpAuth"
+TEAMCITY_GUEST_AUTH = "guestAuth"
+
+TIMEOUT = 10
