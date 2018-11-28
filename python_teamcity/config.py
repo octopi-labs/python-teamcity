@@ -1,0 +1,15 @@
+TEAMCITY_PROTOCOL = "http"
+TEAMCITY_HOST = "localhost"
+TEAMCITY_PORT = "8111"
+TEAMCITY_USERNAME = "srahul07"
+TEAMCITY_PASSWORD = "rahul"
+
+TEAMCITY_URL = "{protocol}://{host}:{port}".format(protocol=TEAMCITY_PROTOCOL, host=TEAMCITY_HOST, port=TEAMCITY_PORT)
+
+TEAMCITY_API = "app/rest"
+TEAMCITY_API_VERSION = "latest"
+
+TEAMCITY_BASIC_AUTH = "httpAuth"
+TEAMCITY_GUEST_AUTH = "guestAuth"
+
+TIMEOUT = 10
