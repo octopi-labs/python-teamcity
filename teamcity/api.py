@@ -1,6 +1,7 @@
 import platform
 
 import requests
+from requests.auth import HTTPBasicAuth
 from teamcity.config import (TEAMCITY_API, TEAMCITY_BASIC_AUTH,
                              TEAMCITY_GUEST_AUTH, TIMEOUT)
 
@@ -36,10 +37,15 @@ class Api(object):
         self.timeout = kwargs.get('timeout', TIMEOUT)
         self.ssl_verify = kwargs.get('ssl_verify', True)
         self.cert = kwargs.get('cert', None)
+        self.session = requests.Session()
         self.connector = self._connect()
     
     def _generate_url(self, scheme, host, port):
         return "{scheme}://{host}:{port}".format(scheme=scheme, host=host, port=port)
+
+    def _create_session(self):
+        if not self.session.cookies:
+            self.session.auth = HTTPBasicAuth(self.username, self.password)
 
     def _connect(self):
         auth = TEAMCITY_BASIC_AUTH if self.username else TEAMCITY_GUEST_AUTH
@@ -94,24 +100,24 @@ class Api(object):
         return request_kwargs
 
     def get(self, url, params=None, headers=None, allow_redirects=True, stream=False):
+        self._create_session()
         request_kwargs = self.get_request_dict(
             params=params,
             headers=headers,
             allow_redirects=allow_redirects,
-            stream=stream,
-            auth=(self.username, self.password)
+            stream=stream
         )
         
-        return requests.get(self._update_url_scheme(url), **request_kwargs)
+        return self.session.get(self._update_url_scheme(url), **request_kwargs)
 
     def post(self, url, params=None, data=None, files=None, headers=None, allow_redirects=True, **kwargs):
+        self._create_session()
         request_kwargs = self.get_request_dict(
             params=params,
             data=data,
             files=files,
             headers=headers,
             allow_redirects=allow_redirects,
-            auth=(self.username, self.password)
             **kwargs)
 
-        return requests.post(self._update_url_scheme(url), **request_kwargs)
+        return self.session.post(self._update_url_scheme(url), **request_kwargs)
