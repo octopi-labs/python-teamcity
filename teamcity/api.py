@@ -48,9 +48,9 @@ class Api(object):
             self.session.auth = HTTPBasicAuth(self.username, self.password)
 
     def _connect(self):
-        auth = TEAMCITY_BASIC_AUTH if self.username else TEAMCITY_GUEST_AUTH
-        url = self.baseurl + "/{auth}/{api}".format(auth=auth, api=TEAMCITY_API)
-        return self.get(url)
+        # auth = TEAMCITY_BASIC_AUTH if self.username else TEAMCITY_GUEST_AUTH
+        # url = self.baseurl + "/{auth}/{api}".format(auth=auth, api=TEAMCITY_API)
+        return self.get(self.url)
     
     def _update_url_scheme(self, url):
         """Updates scheme of given url to the one used in Teamcity baseurl.
@@ -101,6 +101,7 @@ class Api(object):
 
     def get(self, url, params=None, headers=None, allow_redirects=True, stream=False):
         self._create_session()
+        self.session.headers.update({"Accept": "application/json"})
         request_kwargs = self.get_request_dict(
             params=params,
             headers=headers,
