@@ -1,8 +1,8 @@
 import platform
 
 import dateutil
-
 from teamcity.config import TEAMCITY_API
+
 
 class Utils(object):
     """Utility functionalities for teamcity

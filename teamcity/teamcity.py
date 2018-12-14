@@ -20,6 +20,9 @@ class Teamcity(TeamcityApi):
         self._generate_api_endpoint()
     
     def _generate_api_endpoint(self):
+        """Genearte teamcity api endpoint. To know the authenticity of user.
+        
+        """
         auth = os.environ.get('TEAMCITY_GUEST_AUTH')
         if self.username and self.password:
             auth = os.environ.get('TEAMCITY_BASIC_AUTH')
@@ -28,7 +31,12 @@ class Teamcity(TeamcityApi):
     
     @classmethod
     def from_environ(cls):
-        return Api(
+        """Set TeamcityApi details from Environment
+        
+        :return: teamcity api object
+        :rtype: obj
+        """
+        return TeamcityApi(
             username=os.environ.get('TEAMCITY_USERNAME'),
             password=os.environ.get('TEAMCITY_PASSWORD'),
             scheme=os.environ.get('TEAMCITY_SCHEME'),
@@ -37,7 +45,13 @@ class Teamcity(TeamcityApi):
     
     @property
     def server_info(self):
-        url = "{api}/{server}".format(api=self.api_endpoint, server="app/rest/server")
+        """Get teamcity server information
+        
+        :raises TCException: Raises Teamcity exception
+        :return: Teamcity Server object
+        :rtype: obj
+        """
+        url = "{api}/{server}".format(api=self.api_endpoint, server=os.environ.get("TEAMCITY_SERVER_INFO_API"))
         response = self.session.get(url)
         if not response.ok:
             raise TCException(status_code=response.status_code, reason=response.reason, message=response.text)
@@ -62,7 +76,13 @@ class Teamcity(TeamcityApi):
         )
     
     def plugins(self):
-        url = "{api}/{plugin}".format(api=self.api_endpoint, plugin="app/rest/server/plugins")
+        """Get list of plugins installed on teamcity
+        
+        :raises TCException: Teamcity Exception
+        :return: Plugin list
+        :rtype: list
+        """
+        url = "{api}/{plugin}".format(api=self.api_endpoint, plugin=os.environ.get("TEAMCITY_PLUGINS_API"))
         response = self.session.get(url)
         if not response.ok:
             raise TCException(status_code=response.status_code, reason=response.reason, message=response.text)
@@ -90,9 +110,6 @@ class Teamcity(TeamcityApi):
 
             plugins.append(plugin_obj)
         return plugins
-    
-    def get_all_projects(self):
-        self.get("/projects")
 
 
 class Properties(object):
@@ -102,6 +119,7 @@ class Properties(object):
     
     def __repr__(self):
         return "{0}:{1} name={2}, value={3}".format(self.__module__, self.__class__.__name__, self.name, self.value)
+
 
 class Plugin(object):
     def __init__(self, name, display_name, version, load_path, properties=None):
@@ -121,6 +139,7 @@ class Plugin(object):
         if properties:
             self.property_count = len(properties)
             self.properties = properties
+
 
 class TeamcityServer(object):
     def __init__(self, build_number, internal_id, web_url, version_dict, time_dict):
