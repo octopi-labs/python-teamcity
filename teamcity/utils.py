@@ -1,5 +1,7 @@
 import platform
 
+import dateutil
+
 from teamcity.config import TEAMCITY_API
 
 class Utils(object):
@@ -12,7 +14,7 @@ class Utils(object):
         super().__init__(*args, **kwargs)
 
     @classmethod
-    def python_version(version_type="major"):
+    def python_version(cls, version_type="major"):
         """Get version of the python used
         
         :param version_type: version type, defaults to "major"
@@ -24,7 +26,7 @@ class Utils(object):
         return version[0] if version_type == "major" else version[1]
     
     @classmethod
-    def api_url(url):
+    def api_url(cls, url):
         """Get API URL
         
         :param url: URL to be checked if proper in format
@@ -43,7 +45,7 @@ class Utils(object):
         return url
 
     @classmethod
-    def strip_trailing_slash(url):
+    def strip_trailing_slash(cls, url):
         """Strip trailing slash from the url
         
         :param url: URL to be checked for slash at the end
@@ -54,6 +56,17 @@ class Utils(object):
         while url.endswith('/'):
             url = url[:-1]
         return url
+    
+    @classmethod
+    def parse_date_str(cls, date_str):
+        """Parse string to date
+        
+        :param date_str: date in string
+        :type date_str: str
+        :return: date object
+        :rtype: obj
+        """
+        return dateutil.parser.parse(date_str)
 
 
 if __name__=="__main__":

@@ -1,9 +1,8 @@
+import os
 import platform
 
 import requests
 from requests.auth import HTTPBasicAuth
-from teamcity.config import (TEAMCITY_API, TEAMCITY_BASIC_AUTH,
-                             TEAMCITY_GUEST_AUTH, TIMEOUT)
 
 if int(platform.python_version_tuple()[0]) >= 3:
     from urllib.parse import urlparse
@@ -11,46 +10,53 @@ else:
     from urlparse import urlparse
 
 
-
-class Api(object):
+class TeamcityApi(object):
     """Api request, to send requests to server
     
     :param object: default python object
     :type object: obj
     """
-    def __init__(self, *args, **kwargs):
-        """Initialize Api request
-        """
-        if args:
-            try:
-                username, password = args
-            except ValueError as error:
-                raise error
-        else:
-            username = None
-            password = None
+    def __init__(self, username, password, scheme="http", host="localhost", port=8111, **kwargs):
+        """Initialize teamcity object
         
-        self.base_scheme = kwargs.get('scheme')
-        self.baseurl = self._generate_url(kwargs.get('scheme'), kwargs.get('host'), kwargs.get('port'))
-        self.username = username
-        self.password = password
-        self.timeout = kwargs.get('timeout', TIMEOUT)
-        self.ssl_verify = kwargs.get('ssl_verify', True)
-        self.cert = kwargs.get('cert', None)
-        self.session = requests.Session()
-        self.connector = self._connect()
+        :param username: Teamcity username
+        :type username: str
+        :param password: Teamcity password for username
+        :type password: str
+        :param scheme: scheme / protocol to access server, defaults to "http"
+        :param scheme: str, optional
+        :param host: host for server, defaults to "localhost"
+        :param host: str, optional
+        :param port: port number to access teamcity, defaults to 8111
+        :param port: int, optional
+        """
+        self.username = username if username else os.environ.get('TEAMCITY_USERNAME')
+        self.password = password if password else os.environ.get('TEAMCITY_PASSWORD')
+        self.protocol = scheme
+        self.host = host
+        self.port = port
+         
+        self.session = kwargs.get('session', requests.Session())
+        self.session.auth = HTTPBasicAuth(self.username, self.password)
+        self.session.headers['Accept'] = "application/json"
+        self.timeout = kwargs.get('timeout', os.environ.get('TIMEOUT'))
+        self.api_endpoint = None
+        self.auth = None
+
+        self.base_url = self._generate_url()
+        # self.ssl_verify = kwargs.get('ssl_verify', True)
+        # self.cert = kwargs.get('cert', None)
     
-    def _generate_url(self, scheme, host, port):
-        return "{scheme}://{host}:{port}".format(scheme=scheme, host=host, port=port)
-
-    def _create_session(self):
-        if not self.session.cookies:
-            self.session.auth = HTTPBasicAuth(self.username, self.password)
-
-    def _connect(self):
-        # auth = TEAMCITY_BASIC_AUTH if self.username else TEAMCITY_GUEST_AUTH
-        # url = self.baseurl + "/{auth}/{api}".format(auth=auth, api=TEAMCITY_API)
-        return self.get(self.url)
+    def _generate_url(self):
+        """Generate base URL from protocol, host and port
+        
+        :return: base url
+        :rtype: str
+        """
+        base_url = "{scheme}://{host}".format(scheme=self.protocol, host=self.host)
+        if self.port not in [80, 443]:
+            base_url += ":{port}".format(port=self.port)
+        return base_url
     
     def _update_url_scheme(self, url):
         """Updates scheme of given url to the one used in Teamcity baseurl.
@@ -100,8 +106,6 @@ class Api(object):
         return request_kwargs
 
     def get(self, url, params=None, headers=None, allow_redirects=True, stream=False):
-        self._create_session()
-        self.session.headers.update({"Accept": "application/json"})
         request_kwargs = self.get_request_dict(
             params=params,
             headers=headers,
@@ -112,7 +116,6 @@ class Api(object):
         return self.session.get(self._update_url_scheme(url), **request_kwargs)
 
     def post(self, url, params=None, data=None, files=None, headers=None, allow_redirects=True, **kwargs):
-        self._create_session()
         request_kwargs = self.get_request_dict(
             params=params,
             data=data,
