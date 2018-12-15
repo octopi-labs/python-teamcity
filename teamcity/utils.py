@@ -1,4 +1,5 @@
 import platform
+import re
 
 import dateutil
 from teamcity.config import TEAMCITY_API
@@ -67,6 +68,19 @@ class Utils(object):
         :rtype: obj
         """
         return dateutil.parser.parse(date_str)
+    
+    @classmethod
+    def cleanhtml(cls, raw_html):
+        """clean html from response and retrieve text message
+        
+        :param raw_html: raw html string
+        :type raw_html: str
+        :return: clean message string
+        :rtype: str
+        """
+        cleanr = re.compile('<.*?>')
+        cleantext = re.sub(cleanr, '', raw_html)
+        return cleantext
 
 
 if __name__=="__main__":

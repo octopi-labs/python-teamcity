@@ -1,5 +1,6 @@
 import os
 
+import requests
 from requests.auth import HTTPBasicAuth
 from teamcity.api import TeamcityApi
 from teamcity.exceptions import TCException
@@ -27,6 +28,9 @@ class Teamcity(TeamcityApi):
         if self.username and self.password:
             auth = os.environ.get('TEAMCITY_BASIC_AUTH')
             self.auth = HTTPBasicAuth(self.username, self.password)
+        if os.environ.get('TEAMCITY_API_VERSION'):
+            api = os.environ.get('TEAMCITY_API')
+            auth = "{auth}/{api}/{version}".format(auth=auth, api=api, version=os.environ.get('TEAMCITY_API_VERSION'))
         self.api_endpoint = "{base_url}/{auth}".format(base_url=self.base_url, auth=auth)
     
     @classmethod
@@ -54,7 +58,7 @@ class Teamcity(TeamcityApi):
         url = "{api}/{server}".format(api=self.api_endpoint, server=os.environ.get("TEAMCITY_SERVER_INFO_API"))
         response = self.session.get(url)
         if not response.ok:
-            raise TCException(status_code=response.status_code, reason=response.reason, message=response.text)
+            raise TCException(status_code=response.status_code, message=response.text)
         
         data = response.json()
         version_dict={
@@ -85,7 +89,7 @@ class Teamcity(TeamcityApi):
         url = "{api}/{plugin}".format(api=self.api_endpoint, plugin=os.environ.get("TEAMCITY_PLUGINS_API"))
         response = self.session.get(url)
         if not response.ok:
-            raise TCException(status_code=response.status_code, reason=response.reason, message=response.text)
+            raise TCException(status_code=response.status_code, message=response.text)
         
         data = response.json()
         plugins = []

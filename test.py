@@ -22,4 +22,4 @@ os.environ['TEAMCITY_PLUGINS_API'] = TEAMCITY_PLUGINS_API
 
 test = Teamcity("srahul07", "rahul", scheme="http", host="localhost", port=8111)
 print(test.server_info)
-# print(test.plugins())
+print(test.plugins())
