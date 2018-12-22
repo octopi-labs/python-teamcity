@@ -35,3 +35,10 @@ class TestTeamcityApi(object):
     def test_base_url(self, username, password):
         teamcity_api = TeamcityApi(username, password)
         assert teamcity_api.base_url == "http://localhost:8111"
+    
+    @pytest.mark.parametrize("scheme, host, port, expected", [
+        ("https", "example.com", 443, "https://example.com")
+        ])
+    def test__generate_url(self, username, password, scheme, host, port, expected):
+        teamcity_api = TeamcityApi(username, password, scheme, host, port)
+        assert teamcity_api._generate_url() == expected
