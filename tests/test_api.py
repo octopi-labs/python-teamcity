@@ -31,3 +31,7 @@ class TestTeamcityApi(object):
         assert teamcity_api.protocol == "http"
         assert teamcity_api.host == "localhost"
         assert teamcity_api.port == 8111
+    
+    def test_base_url(self, username, password):
+        teamcity_api = TeamcityApi(username, password)
+        assert teamcity_api.base_url == "http://localhost:8111"
