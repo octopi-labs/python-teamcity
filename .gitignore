@@ -2,5 +2,8 @@
 .sonarlint
 .vscode
 
+tags
+
 __pycache__
 venv
+junk

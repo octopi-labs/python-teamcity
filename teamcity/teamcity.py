@@ -31,7 +31,10 @@ class Teamcity(TeamcityApi):
         if os.environ.get('TEAMCITY_API_VERSION'):
             api = os.environ.get('TEAMCITY_API')
             auth = "{auth}/{api}/{version}".format(auth=auth, api=api, version=os.environ.get('TEAMCITY_API_VERSION'))
-        self.api_endpoint = "{base_url}/{auth}".format(base_url=self.base_url, auth=auth)
+        if auth:
+            self.api_endpoint = "{base_url}/{auth}".format(base_url=self.base_url, auth=auth)
+        else:
+            self.api_endpoint = "{base_url}".format(base_url=self.base_url)
     
     @classmethod
     def from_environ(cls):

@@ -1,6 +1,9 @@
 README
 ======
 
+[![Build Status](https://semaphoreci.com/api/v1/octopi-assembly/python-teamcity/branches/0-1/shields_badge.svg)](https://semaphoreci.com/octopi-assembly/python-teamcity)
+
+
 Python Teamcity is a python wrapper for the [Teamcity](https://www.jetbrains.com/teamcity/)
 REST API which aims to provide a more conventionally pythonic way of controlling
 a Teamcity server.  It provides a higher-level API containing a number of
@@ -64,7 +67,7 @@ Installing without setup.py
 Then install the required python packages using pip_::
 
     $ sudo pip install python-teamcity
-    
+
 Inspiration
 ---------------
 
