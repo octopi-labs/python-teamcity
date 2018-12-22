@@ -1,7 +1,7 @@
 README
 ======
 
-[![Build Status](https://semaphoreci.com/api/v1/srahul07-93/python-teamcity/branches/0-1/badge.svg)](https://semaphoreci.com/srahul07-93/python-teamcity)
+[![Build Status](https://semaphoreci.com/api/v1/octopi-assembly/python-teamcity/branches/0-1/shields_badge.svg)](https://semaphoreci.com/octopi-assembly/python-teamcity)
 
 
 Python Teamcity is a python wrapper for the [Teamcity](https://www.jetbrains.com/teamcity/)
