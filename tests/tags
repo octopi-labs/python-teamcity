@@ -1,0 +1,24 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+add_cash	/home/rahul/git/octopi_assembly/python-teamcity/tests/wallet.py	/^    def add_cash(self, amount):$/;"	m	language:Python	class:Wallet
+capital_case	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_capitalize.py	/^def capital_case(x):$/;"	f	language:Python
+empty_wallet	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def empty_wallet():$/;"	f	language:Python
+InsufficientAmount	/home/rahul/git/octopi_assembly/python-teamcity/tests/wallet.py	/^class InsufficientAmount(Exception):$/;"	c	language:Python
+my_wallet	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def my_wallet():$/;"	f	language:Python
+spend_cash	/home/rahul/git/octopi_assembly/python-teamcity/tests/wallet.py	/^    def spend_cash(self, amount):$/;"	m	language:Python	class:Wallet
+test_capital_case	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_capitalize.py	/^def test_capital_case():$/;"	f	language:Python
+test_default_initial_amount	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_default_initial_amount():$/;"	f	language:Python
+test_default_initial_amount	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_default_initial_amount(empty_wallet):$/;"	f	language:Python
+test_raises_exception_on_non_string_arguments	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_capitalize.py	/^def test_raises_exception_on_non_string_arguments():$/;"	f	language:Python
+test_setting_initial_amount	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_setting_initial_amount():$/;"	f	language:Python
+test_setting_initial_amount	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_setting_initial_amount(wallet):$/;"	f	language:Python
+test_transactions	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_transactions(earned, spent, expected):$/;"	f	language:Python
+test_transactions	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_transactions(my_wallet, earned, spent, expected):$/;"	f	language:Python
+test_wallet_add_cash	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_wallet_add_cash():$/;"	f	language:Python
+test_wallet_add_cash	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_wallet_add_cash(wallet):$/;"	f	language:Python
+test_wallet_spend_cash	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_wallet_spend_cash():$/;"	f	language:Python
+test_wallet_spend_cash	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_wallet_spend_cash(wallet):$/;"	f	language:Python
+test_wallet_spend_cash_raises_exception_on_inufficient_amount	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_wallet_spend_cash_raises_exception_on_inufficient_amount():$/;"	f	language:Python
+test_wallet_spend_cash_raises_exception_on_inufficient_amount	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def test_wallet_spend_cash_raises_exception_on_inufficient_amount(empty_wallet):$/;"	f	language:Python
+wallet	/home/rahul/git/octopi_assembly/python-teamcity/tests/test_wallet.py	/^def wallet():$/;"	f	language:Python
+Wallet	/home/rahul/git/octopi_assembly/python-teamcity/tests/wallet.py	/^class Wallet(object):$/;"	c	language:Python
+__init__	/home/rahul/git/octopi_assembly/python-teamcity/tests/wallet.py	/^    def __init__(self, initial_amount=0):$/;"	m	language:Python	class:Wallet
