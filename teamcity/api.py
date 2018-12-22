@@ -34,7 +34,7 @@ class TeamcityApi(object):
         self.password = password if password else os.environ.get('TEAMCITY_PASSWORD')
         self.protocol = scheme
         self.host = host
-        self.port = port
+        self.port = port if isinstance(port, int) else int(port)
          
         self.session = kwargs.get('session', requests.Session())
         self.session.auth = HTTPBasicAuth(self.username, self.password)
